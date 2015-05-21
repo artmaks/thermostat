@@ -6,4 +6,17 @@
 
     <color name="primaryColor">#2196F3</color>
     <color name="secondColor">#FFFFFF</color>
+    <string name="title_activity_week_schedule">WeekSchedule</string>
+
+    <string-array name="dayList">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string name="title_activity_day_schedule">DaySchedule</string>
+    <string name="title_activity_vacation_mode">VacationMode</string>
 </resources>

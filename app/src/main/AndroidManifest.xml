@@ -16,6 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".WeekSchedule"
+            android:label="@string/title_activity_week_schedule" >
+        </activity>
+        <activity
+            android:name=".DaySchedule"
+            android:label="@string/title_activity_day_schedule" >
+        </activity>
+        <activity
+            android:name=".VacationMode"
+            android:label="@string/title_activity_vacation_mode" >
+        </activity>
     </application>
 
 </manifest>
