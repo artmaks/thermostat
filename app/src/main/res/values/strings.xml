@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <color name="primaryColor">#2196F3</color>
+    <color name="secondColor">#FFFFFF</color>
 </resources>
