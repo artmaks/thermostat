@@ -4,6 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="current_temp">Current: %1$d</string>
+    <string name="target_temp">%1$d</string>
+
     <color name="primaryColor">#2196F3</color>
     <color name="secondColor">#FFFFFF</color>
     <string name="title_activity_week_schedule">WeekSchedule</string>

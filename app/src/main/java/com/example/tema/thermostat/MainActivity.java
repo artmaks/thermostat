@@ -7,8 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -18,9 +21,17 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MainListAdapter adapter = new MainListAdapter(this, generateData());
+        TextView t=(TextView)findViewById(R.id.textView);
+
+        //t.setText(new SimpleDateFormat("EEEE").format(7));
+
+        TemperatureManager manager=new TemperatureManager((TextView)findViewById(R.id.textView3));
+        MainListAdapter adapter = new MainListAdapter(this, manager.getNextDays());
         ListView listView = (ListView)findViewById(R.id.mainListView);
         listView.setAdapter(adapter);
+
+
+
     }
 
     @Override
