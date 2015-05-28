@@ -16,6 +16,8 @@ public class DaySchedule extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_schedule);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         MainListAdapter adapter = new MainListAdapter(this, generateData());
         ListView listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(adapter);
@@ -35,11 +37,8 @@ public class DaySchedule extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
+        onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 

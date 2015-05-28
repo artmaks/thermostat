@@ -25,73 +25,86 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="16dp" >
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/imageView4"
-                    android:background="@drawable/sun" />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton5"
-                    android:background="@drawable/ic_minus" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="18.6"
-                    android:id="@+id/textView4"
-                    android:textSize="36dp"
-                    android:textColor="@color/secondColor"
-                    android:layout_marginLeft="8dp" />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton6"
-                    android:background="@drawable/ic_plus" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="16dp" >
+                android:layout_marginTop="10dp">
 
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/imageView3"
-                    android:background="@drawable/sun" />
-
-                <ImageButton
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton3"
-                    android:background="@drawable/ic_minus" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="18.6"
-                    android:id="@+id/textView5"
-                    android:textSize="36dp"
-                    android:textColor="@color/secondColor"
-                    android:layout_marginLeft="8dp" />
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:id="@+id/imageView4"
+                        android:background="@drawable/sun" />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton4"
-                    android:background="@drawable/ic_plus" />
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton5"
+                        android:background="@drawable/ic_minus"
+                        android:layout_marginTop="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="18.6"
+                        android:id="@+id/textView4"
+                        android:textSize="36dp"
+                        android:textColor="@color/secondColor"
+                        android:layout_marginTop="2dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton6"
+                        android:background="@drawable/ic_plus"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp" >
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:id="@+id/imageView3"
+                        android:background="@drawable/night"
+                        android:layout_marginLeft="8dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton3"
+                        android:background="@drawable/ic_minus"
+                        android:layout_marginTop="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="18.6"
+                        android:id="@+id/textView5"
+                        android:textSize="36dp"
+                        android:textColor="@color/secondColor"
+                        android:layout_marginTop="2dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton4"
+                        android:background="@drawable/ic_plus"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -99,6 +112,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/staticDayListView"
-        android:entries="@array/dayList" />
+        android:entries="@array/dayList"
+        android:divider="#FFFFFF"/>
 
 </LinearLayout>
