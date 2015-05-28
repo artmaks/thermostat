@@ -5,18 +5,25 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    public static float targetTemperature = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initializeView();
 
         MainListAdapter adapter = new MainListAdapter(this, generateData());
         ListView listView = (ListView)findViewById(R.id.mainListView);
@@ -68,5 +75,37 @@ public class MainActivity extends ActionBarActivity {
         models.add(new Item("16:00 - 22:00", "18.0"));
         models.add(new Item("22:00 - 23:59", "20.0"));
         return models;
+    }
+
+    public void initializeView() {
+        TextView target = (TextView)findViewById(R.id.targetText);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        df.setMinimumFractionDigits(1);
+        target.setText(df.format(targetTemperature));
+    }
+
+    /**
+     * Увеличить target (Нажатие кнопки +)
+     */
+    public void incrementTarget(View v) {
+        TextView target = (TextView)findViewById(R.id.targetText);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        df.setMinimumFractionDigits(1);
+        targetTemperature += 0.1;
+        target.setText(df.format(targetTemperature));
+    }
+
+    /**
+     * Уменьшить target (Нажатие кнопки -)
+     */
+    public void decrementTarget(View v) {
+        TextView target = (TextView)findViewById(R.id.targetText);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        df.setMinimumFractionDigits(1);
+        targetTemperature -= 0.1;
+        target.setText(df.format(targetTemperature));
     }
 }
