@@ -12,6 +12,7 @@ public class VacationMode extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_mode);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class VacationMode extends ActionBarActivity {
             return true;
         }
 
+        onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 }

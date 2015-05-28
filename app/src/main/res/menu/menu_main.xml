@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item android:id="@+id/action_week_schedule" android:title="Week Schedule"
         android:orderInCategory="100" app:showAsAction="always"
-        android:icon="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
+        android:icon="@drawable/calendarclock"/>
 
     <item android:id="@+id/action_vacation_mode" android:title="Vacation Mode"
         android:orderInCategory="100" app:showAsAction="always"
-        android:icon="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
+        android:icon="@drawable/wallettravel"/>
 </menu>

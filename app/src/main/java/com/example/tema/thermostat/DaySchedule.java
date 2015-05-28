@@ -16,6 +16,8 @@ public class DaySchedule extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_schedule);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         MainListAdapter adapter = new MainListAdapter(this, generateData());
         ListView listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(adapter);
@@ -40,6 +42,7 @@ public class DaySchedule extends ActionBarActivity {
             return true;
         }
 
+        onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 
