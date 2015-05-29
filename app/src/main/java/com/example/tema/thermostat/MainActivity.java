@@ -141,8 +141,24 @@ public class MainActivity extends ActionBarActivity {
         df.setMinimumFractionDigits(1);
         targetTemperature += 0.1;
         target.setText(df.format(targetTemperature));
+        updateTempPeriod();
     }
 
+
+    /*
+        update temperature in current period
+        update temperature in list of days
+     */
+    private void updateTempPeriod(){
+
+        if (manager.isDayPeriod()){
+            TemperatureManager.setDay_temper(targetTemperature);
+        } else {
+            TemperatureManager.setNight_temper(targetTemperature);
+        }
+
+        updateDays();
+    }
     /**
      * Уменьшить target (Нажатие кнопки -)
      */
@@ -154,5 +170,5 @@ public class MainActivity extends ActionBarActivity {
         targetTemperature -= 0.1;
         target.setText(df.format(targetTemperature));
     }
-    
+
 }

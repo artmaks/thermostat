@@ -2,11 +2,13 @@ package com.example.tema.thermostat;
 
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Olga on 28.05.2015.
@@ -17,10 +19,11 @@ public class TemperatureManager {
     private static float night_temper;
     private float target;
     public static ArrayList<PeriodDay> days;
-    int dayOfWeek;
-    int currentDay;
-    int hour;
-    int minutes;
+    private int dayOfWeek;
+    private int currentDay;
+    private int hour;
+    private int minutes;
+    private boolean dayPeriod;
 
     Date currentTime;
     long currenSeconds;
@@ -49,11 +52,24 @@ public class TemperatureManager {
 
         if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
             target= day_temper;
+            dayPeriod=true;
         }else {
             target= night_temper;
+            dayPeriod=false;
         }
     }
 
+    public boolean isDayPeriod(){
+        return dayPeriod;
+    }
+
+    public static void setDay_temper(float temper){
+        day_temper=temper;
+    }
+
+    public static void setNight_temper(float temper){
+        night_temper=temper;
+    }
 
     public void incrementcurrentTime(int milliseconds){
         currenSeconds+=milliseconds;
@@ -69,8 +85,10 @@ public class TemperatureManager {
         float old_target=this.target;
         if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
             this.target = day_temper;
+            dayPeriod=true;
         }else {
             this.target = night_temper;
+            dayPeriod=false;
         }
 
         return this.target!=old_target;
@@ -92,17 +110,21 @@ public class TemperatureManager {
 
     public ArrayList<Item> getNextDays(){
         ArrayList<Item> models = new ArrayList<Item>();
+
+        String dayT=String.format(Locale.ENGLISH, "%.1f", day_temper);
+        String nightT=String.format(Locale.ENGLISH, "%.1f", night_temper);
+
         models.add(new Item("Today - " + days.get(dayOfWeek-1).getDay()));
-        models.add(new Item(days.get(dayOfWeek-1).dayPeriod.toString(), String.valueOf(day_temper)));
-        models.add(new Item(days.get(dayOfWeek-1).nightPeriod.toString(), String.valueOf(night_temper)));
+        models.add(new Item(days.get(dayOfWeek-1).dayPeriod.toString(), dayT));
+        models.add(new Item(days.get(dayOfWeek-1).nightPeriod.toString(), nightT));
 
         int day=dayOfWeek==7?1:dayOfWeek;
         for(int i=0; i<2; i++){
             day=day+1>=8?1:day+1;
 
             models.add(new Item(days.get(day-1).getDay()));
-            models.add(new Item(days.get(day-1).dayPeriod.toString(), String.valueOf(day_temper)));
-            models.add(new Item(days.get(day-1).nightPeriod.toString(), String.valueOf(night_temper)));
+            models.add(new Item(days.get(day-1).dayPeriod.toString(), dayT));
+            models.add(new Item(days.get(day-1).nightPeriod.toString(), nightT));
         }
 
         return models;
