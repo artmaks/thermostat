@@ -116,13 +116,20 @@ public class MainActivity extends AppCompatActivity {
      * Увеличить target (Нажатие кнопки +)
      */
     public void incrementTarget(View v) {
+
+        //check Limits of temp (thirty degrees)
+        float epsilon=0.01f;
+        if (Math.abs(targetTemperature-30)<epsilon){
+            return;
+        }
+
         TextView target = (TextView)findViewById(R.id.targetText);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
         targetTemperature += 0.1;
         target.setText(df.format(targetTemperature));
-        updateTempPeriod();
+        updateCurrentTemp=true;
     }
 
 
@@ -130,28 +137,20 @@ public class MainActivity extends AppCompatActivity {
      * Уменьшить target (Нажатие кнопки -)
      */
     public void decrementTarget(View v) {
+
+        //check limits of temp (five degrees)
+        float epsilon=0.1f;
+        if (Math.abs(targetTemperature-5)<epsilon){
+            return;
+        }
         TextView target = (TextView)findViewById(R.id.targetText);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
         targetTemperature -= 0.1;
         target.setText(df.format(targetTemperature));
-        updateTempPeriod();
-    }
-
-    /*
-    update temperature in current period
-    update temperature in list of days
- */
-    private void updateTempPeriod(){
-
-        if (manager.isDayPeriod()){
-            TemperatureManager.setDay_temper(targetTemperature);
-        } else {
-            TemperatureManager.setNight_temper(targetTemperature);
-        }
-
-        updateDays();
         updateCurrentTemp=true;
     }
+
+
 }

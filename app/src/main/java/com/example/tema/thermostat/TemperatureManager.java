@@ -32,8 +32,8 @@ public class TemperatureManager {
         currentTime=new Date();
         currenSeconds=currentTime.getTime();
 
-        day_temper=19.4f;
-        night_temper=15.3f;
+        day_temper=29.4f;
+        night_temper=5.3f;
 
         Calendar c = Calendar.getInstance();
         c.setTime(currentTime);
