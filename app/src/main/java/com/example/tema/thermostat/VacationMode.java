@@ -117,12 +117,12 @@ public class VacationMode extends ActionBarActivity {
             return;
         }
 
-        TextView target = (TextView)findViewById(R.id.targetText);
+        TextView target = (TextView)findViewById(R.id.textView9);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
-        TemperatureManager.vacation_temp -= 0.1;
-        target.setText(df.format(TemperatureManager.vacation_temp));
+        target_temp -= 0.1;
+        target.setText(df.format(target_temp));
 
     }
 }
