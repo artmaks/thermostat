@@ -81,7 +81,14 @@
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/vacation_text"
+        android:textSize="36dp"
+        android:textColor="@color/secondColor"
+        android:layout_marginLeft="8dp" />
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

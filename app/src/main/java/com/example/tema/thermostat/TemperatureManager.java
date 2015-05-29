@@ -1,13 +1,9 @@
 package com.example.tema.thermostat;
 
-import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -17,6 +13,9 @@ import java.util.Locale;
 public class TemperatureManager {
     private static float day_temper;
     private static float night_temper;
+
+    public static boolean isVacationMode;
+    public static float vacation_temp;
     private float target;
     public static ArrayList<PeriodDay> days;
     private int dayOfWeek;
@@ -32,9 +31,11 @@ public class TemperatureManager {
         currentTime=new Date();
         currenSeconds=currentTime.getTime();
 
+        vacation_temp=18.9f;
         day_temper=29.4f;
         night_temper=5.3f;
 
+        isVacationMode=false;
         Calendar c = Calendar.getInstance();
         c.setTime(currentTime);
         dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
@@ -50,6 +51,28 @@ public class TemperatureManager {
         days.add(new PeriodDay(6, new TimePeriod(0, 29, 12, 0)));
         days.add(new PeriodDay(7, new TimePeriod(0, 11, 12, 0)));
 
+        if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
+            target= day_temper;
+            dayPeriod=true;
+        }else {
+            target= night_temper;
+            dayPeriod=false;
+        }
+    }
+
+    public void updateAfterReturn(){
+        // count time from returning
+        currentTime=new Date();
+        long milliseconds=currentTime.getTime();
+        currenSeconds+=(milliseconds-currenSeconds)*3000;
+
+        //initialise others
+        currentTime=new Date(currenSeconds);
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentTime);
+        currentDay = c.get(Calendar.DAY_OF_WEEK);
+        hour=c.get(Calendar.HOUR_OF_DAY);
+        minutes=c.get(Calendar.MINUTE);
         if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
             target= day_temper;
             dayPeriod=true;

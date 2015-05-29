@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.util.Locale;
 
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private TemperatureManager manager;
     private MainListAdapter adapter;
     private boolean updateCurrentTemp;
+    private boolean firstLaunch;
+    final Handler myHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,41 +32,83 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         manager=new TemperatureManager();
+        firstLaunch=true;
+    }
+
+
+    @Override
+    protected void onResume (){
+        super.onResume();
+        TextView vacation=(TextView)findViewById(R.id.vacation_text);
+
+        if (!TemperatureManager.isVacationMode){
+            initializeUsualMode();
+            vacation.setVisibility(View.GONE);
+        } else {
+            vacation.setVisibility(View.VISIBLE);
+            vacation.setText("Vacation mode is on");
+            initializeVacationMode();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myHandler.removeCallbacks(updateDays);
+    }
+
+    public void initializeVacationMode(){
+        ListView listView = (ListView)findViewById(R.id.mainListView);
+        listView.setVisibility(View.GONE);
+
+        TextView currentTemp=(TextView)findViewById(R.id.textView);
+        currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", TemperatureManager.vacation_temp));
+        targetTemperature=TemperatureManager.vacation_temp;
+        initializeView();
+    }
+
+    public void initializeUsualMode(){
+        if (firstLaunch){
+            firstLaunch=false;
+        } else {
+            manager.updateAfterReturn();
+        }
+
         adapter = new MainListAdapter(this, manager.getNextDays());
         ListView listView = (ListView)findViewById(R.id.mainListView);
         listView.setAdapter(adapter);
+        listView.setVisibility(View.VISIBLE);
 
         updateCurrentTemp=true;
 
         targetTemperature=manager.getTargetTemprature();
         initializeView();
 
-        final TextView currentTemp=(TextView)findViewById(R.id.textView);
-
-        final Handler myHandler = new Handler();
-
-        myHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                manager.incrementcurrentTime(3000000);
-                if (updateCurrentTemp) {
-                    updateCurrentTemp = false;
-                    currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature));
-                }
-                if (manager.isAnotherDay()) {
-                    // update lis of days
-                    updateDays();
-                }
-                if (manager.isNewPeriod()) {
-                    updateTemp();
-                    // update current temperature next tick
-                    updateCurrentTemp = true;
-                }
-                myHandler.postDelayed(this, 1000);
-            }
-        }, 1000);
-
+        myHandler.postDelayed(updateDays, 1000);
     }
+
+    private  Runnable updateDays=new Runnable() {
+        @Override
+        public void run() {
+            final TextView currentTemp=(TextView)findViewById(R.id.textView);
+            manager.incrementcurrentTime(300000);
+
+            if (updateCurrentTemp) {
+                updateCurrentTemp = false;
+                currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature));
+            }
+            if (manager.isAnotherDay()) {
+                // update lis of days
+                updateDays();
+            }
+            if (manager.isNewPeriod()) {
+                updateTemp();
+                // update current temperature next tick
+                updateCurrentTemp = true;
+            }
+            myHandler.postDelayed(this, 1000);
+        }
+    };
 
     public void updateTemp(){
         targetTemperature = manager.getTargetTemprature();
@@ -143,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         if (Math.abs(targetTemperature-5)<epsilon){
             return;
         }
+
         TextView target = (TextView)findViewById(R.id.targetText);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
@@ -151,6 +199,4 @@ public class MainActivity extends AppCompatActivity {
         target.setText(df.format(targetTemperature));
         updateCurrentTemp=true;
     }
-
-
 }
