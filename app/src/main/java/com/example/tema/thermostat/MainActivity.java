@@ -2,50 +2,41 @@ package com.example.tema.thermostat;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Locale;
 
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends AppCompatActivity {
 
     public static float targetTemperature;
-    TemperatureManager manager;
-
-    ListView listView;
-    MainListAdapter adapter;
-
-
-
+    private TemperatureManager manager;
+    private MainListAdapter adapter;
+    private boolean updateCurrentTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         manager=new TemperatureManager();
         adapter = new MainListAdapter(this, manager.getNextDays());
+        ListView listView = (ListView)findViewById(R.id.mainListView);
+        listView.setAdapter(adapter);
+
+        updateCurrentTemp=true;
 
         targetTemperature=manager.getTargetTemprature();
-
         initializeView();
-        listView = (ListView)findViewById(R.id.mainListView);
-        listView.setAdapter(adapter);
+
+        final TextView currentTemp=(TextView)findViewById(R.id.textView);
 
         final Handler myHandler = new Handler();
 
@@ -53,14 +44,20 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 manager.incrementcurrentTime(3000000);
-    //            t.setText(String.valueOf(manager.hour)+":"+String.valueOf(manager.minutes));
+                if (updateCurrentTemp) {
+                    updateCurrentTemp = false;
+                    currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature));
+                }
                 if (manager.isAnotherDay()) {
+                    // update lis of days
                     updateDays();
                 }
                 if (manager.isNewPeriod()) {
                     updateTemp();
+                    // update current temperature next tick
+                    updateCurrentTemp = true;
                 }
-                myHandler.postDelayed(this,1000);
+                myHandler.postDelayed(this, 1000);
             }
         }, 1000);
 
@@ -76,6 +73,7 @@ public class MainActivity extends ActionBarActivity {
         adapter.addAll(manager.getNextDays());
         adapter.notifyDataSetChanged();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -106,23 +104,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private ArrayList<Item> generateData(){
-        ArrayList<Item> models = new ArrayList<Item>();
-        models.add(new Item("Today (17 April)"));
-        models.add(new Item("Now - 16:00", "20.0"));
-        models.add(new Item("16:00 - 22:00", "18.0"));
-        models.add(new Item("22:00 - 23:59", "20.0"));
-        models.add(new Item("18 April"));
-        models.add(new Item("Now - 16:00", "20.0"));
-        models.add(new Item("16:00 - 22:00", "18.0"));
-        models.add(new Item("22:00 - 23:59", "20.0"));
-        models.add(new Item("19 April"));
-        models.add(new Item("Now - 16:00", "20.0"));
-        models.add(new Item("16:00 - 22:00", "18.0"));
-        models.add(new Item("22:00 - 23:59", "20.0"));
-        return models;
-    }
-
     public void initializeView() {
         TextView target = (TextView)findViewById(R.id.targetText);
         DecimalFormat df = new DecimalFormat();
@@ -145,20 +126,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    /*
-        update temperature in current period
-        update temperature in list of days
-     */
-    private void updateTempPeriod(){
-
-        if (manager.isDayPeriod()){
-            TemperatureManager.setDay_temper(targetTemperature);
-        } else {
-            TemperatureManager.setNight_temper(targetTemperature);
-        }
-
-        updateDays();
-    }
     /**
      * Уменьшить target (Нажатие кнопки -)
      */
@@ -169,6 +136,22 @@ public class MainActivity extends ActionBarActivity {
         df.setMinimumFractionDigits(1);
         targetTemperature -= 0.1;
         target.setText(df.format(targetTemperature));
+        updateTempPeriod();
     }
 
+    /*
+    update temperature in current period
+    update temperature in list of days
+ */
+    private void updateTempPeriod(){
+
+        if (manager.isDayPeriod()){
+            TemperatureManager.setDay_temper(targetTemperature);
+        } else {
+            TemperatureManager.setNight_temper(targetTemperature);
+        }
+
+        updateDays();
+        updateCurrentTemp=true;
+    }
 }
