@@ -26,6 +26,7 @@ public class PeriodDay {
 
     }
 
+
     public boolean comparePeriod(int hour, int minute){
         if (dayPeriod.compareWithTime(hour,minute)){
             return true;
@@ -37,19 +38,19 @@ public class PeriodDay {
     public String getDay(){
         String result;
         switch (Day){
-            case 1: result="Monday";
+            case 1: result="Sunday";
                     break;
-            case 2: result="Tuesday";
+            case 2: result="Monday";
                 break;
             case 3: result="Wednesday";
                 break;
-            case 4: result="Thursday";
+            case 4: result="Wednesday";
                 break;
-            case 5: result="Friday";
+            case 5: result="Thursday";
                 break;
-            case 6: result="Saturday";
+            case 6: result="Friday";
                 break;
-            case 7: result="Sunday";
+            case 7: result="Saturday";
                 break;
             default: result="null";
                 break;

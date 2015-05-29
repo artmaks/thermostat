@@ -28,7 +28,19 @@ public class TimePeriod {
 
 
     public boolean compareWithTime(int hour, int minute){
-        return hour>endHour?false:minute<endMinute;
+        boolean result;
+        if (hour>=startHour){
+            if (hour<endHour){
+                result=true;
+            } else if (hour==endHour&&minute<endMinute) {
+                result=true;
+            } else {
+                result=false;
+            }
+        } else {
+            result=false;
+        }
+        return result;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.example.tema.thermostat;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,44 +11,71 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-<<<<<<< HEAD
 import java.text.SimpleDateFormat;
-=======
 import java.text.DecimalFormat;
->>>>>>> upstream/master
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    public static float targetTemperature = 0;
+    public static float targetTemperature;
+    TemperatureManager manager;
+
+    ListView listView;
+    MainListAdapter adapter;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-<<<<<<< HEAD
-        TextView t=(TextView)findViewById(R.id.textView);
 
-        //t.setText(new SimpleDateFormat("EEEE").format(7));
 
-        TemperatureManager manager=new TemperatureManager((TextView)findViewById(R.id.textView3));
-        MainListAdapter adapter = new MainListAdapter(this, manager.getNextDays());
-=======
+        manager=new TemperatureManager();
+        adapter = new MainListAdapter(this, manager.getNextDays());
+
+        targetTemperature=manager.getTargetTemprature();
+
         initializeView();
-
-        MainListAdapter adapter = new MainListAdapter(this, generateData());
->>>>>>> upstream/master
-        ListView listView = (ListView)findViewById(R.id.mainListView);
+        listView = (ListView)findViewById(R.id.mainListView);
         listView.setAdapter(adapter);
 
+        final Handler myHandler = new Handler();
 
+        myHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                manager.incrementcurrentTime(3000000);
+    //            t.setText(String.valueOf(manager.hour)+":"+String.valueOf(manager.minutes));
+                if (manager.isAnotherDay()) {
+                    updateDays();
+                }
+                if (manager.isNewPeriod()) {
+                    updateTemp();
+                }
+                myHandler.postDelayed(this,1000);
+            }
+        }, 1000);
 
     }
 
+    public void updateTemp(){
+        targetTemperature = manager.getTargetTemprature();
+        initializeView();
+    }
+
+    public void updateDays(){
+        adapter.clear();
+        adapter.addAll(manager.getNextDays());
+        adapter.notifyDataSetChanged();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -125,4 +154,5 @@ public class MainActivity extends ActionBarActivity {
         targetTemperature -= 0.1;
         target.setText(df.format(targetTemperature));
     }
+    
 }
