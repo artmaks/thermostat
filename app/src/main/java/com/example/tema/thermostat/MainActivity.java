@@ -9,9 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 import java.util.Locale;
 
@@ -62,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setVisibility(View.GONE);
 
         TextView currentTemp=(TextView)findViewById(R.id.textView);
-        currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", TemperatureManager.vacation_temp));
         targetTemperature=TemperatureManager.vacation_temp;
         initializeView();
+        currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature));
     }
 
     public void initializeUsualMode(){
