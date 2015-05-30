@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -160,12 +162,87 @@ public class MainActivity extends AppCompatActivity {
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
         target.setText(df.format(targetTemperature) + "º");
+
+        ImageButton plusButton = (ImageButton)findViewById(R.id.plusButton);
+        ImageButton minusButton = (ImageButton)findViewById(R.id.minusButton);
+
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                incrementTarget();
+            }
+        });
+
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                decrementTarget();
+            }
+        });
+
+        minusButton.setOnTouchListener(new View.OnTouchListener() {
+            private Handler mHandler;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (mHandler != null) return true;
+                        mHandler = new Handler();
+                        mHandler.postDelayed(mAction, 100);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (mHandler == null) return true;
+                        mHandler.removeCallbacks(mAction);
+                        mHandler = null;
+                        break;
+                }
+                return false;
+            }
+
+            Runnable mAction = new Runnable() {
+                @Override
+                public void run() {
+                    decrementTarget();
+                    mHandler.postDelayed(this, 100);
+                }
+            };
+        });
+
+        plusButton.setOnTouchListener(new View.OnTouchListener() {
+            private Handler mHandler;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (mHandler != null) return true;
+                        mHandler = new Handler();
+                        mHandler.postDelayed(mAction, 100);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (mHandler == null) return true;
+                        mHandler.removeCallbacks(mAction);
+                        mHandler = null;
+                        break;
+                }
+                return false;
+            }
+
+            Runnable mAction = new Runnable() {
+                @Override
+                public void run() {
+                    incrementTarget();
+                    mHandler.postDelayed(this, 100);
+                }
+            };
+        });
     }
 
     /**
      * Увеличить target (Нажатие кнопки +)
      */
-    public void incrementTarget(View v) {
+    public void incrementTarget() {
 
         //check Limits of temp (thirty degrees)
         float epsilon=0.01f;
@@ -186,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Уменьшить target (Нажатие кнопки -)
      */
-    public void decrementTarget(View v) {
+    public void decrementTarget() {
 
         //check limits of temp (five degrees)
         float epsilon=0.1f;
