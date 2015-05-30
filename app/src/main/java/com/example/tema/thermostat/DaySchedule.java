@@ -40,11 +40,13 @@ public class DaySchedule extends ActionBarActivity {
             if(type) {
                 StartdateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 StartdateAndTime.set(Calendar.MINUTE, minute);
-                startText.setText(hourOfDay + ":" + minute);
+                startText.setText(String.format("%02d", hourOfDay) + ":"
+                        + String.format("%02d", minute));
             } else {
                 EnddateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 EnddateAndTime.set(Calendar.MINUTE, minute);
-                endText.setText(hourOfDay + ":" + minute);
+                endText.setText(String.format("%02d", hourOfDay) + ":"
+                        + String.format("%02d", minute));
             }
         }
     };
@@ -56,13 +58,12 @@ public class DaySchedule extends ActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        adapter = new MainListAdapter(this, generateData(), true,fab);
 
-        adapter = new MainListAdapter(this, generateData());
         ListView listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(adapter);
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToListView(listView);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -70,7 +71,7 @@ public class DaySchedule extends ActionBarActivity {
             }
         });
         if (TemperatureManager.days.get(day).isFull()){
-            fab.setVisibility(View.GONE);
+            fab.setEnabled(false);
         }
     }
 
@@ -104,15 +105,35 @@ public class DaySchedule extends ActionBarActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (EnddateAndTime.get(Calendar.HOUR_OF_DAY)<StartdateAndTime.get(Calendar.HOUR_OF_DAY)){
+                    chooseEnd(view);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "End period is less than start period.\n Set another",
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+
                 //TODO Запомнить период
-                TemperatureManager.days.get(day).addDayPeriod(StartdateAndTime.get(Calendar.HOUR_OF_DAY), StartdateAndTime.get(Calendar.MINUTE), EnddateAndTime.get(Calendar.HOUR_OF_DAY), EnddateAndTime.get(Calendar.MINUTE));
-                updatePeriods();
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "New period: from" + StartdateAndTime.get(Calendar.HOUR_OF_DAY) + ":" + StartdateAndTime.get(Calendar.MINUTE)
-                        + " to " + EnddateAndTime.get(Calendar.HOUR_OF_DAY) + ":" + EnddateAndTime.get(Calendar.MINUTE),
-                        Toast.LENGTH_SHORT);
-                toast.show();
-                dismissDialog(1);
+                if (TemperatureManager.days.get(day).addDayPeriod(StartdateAndTime.get(Calendar.HOUR_OF_DAY), StartdateAndTime.get(Calendar.MINUTE), EnddateAndTime.get(Calendar.HOUR_OF_DAY), EnddateAndTime.get(Calendar.MINUTE))) {
+                    updatePeriods();
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "New period: from" + StartdateAndTime.get(Calendar.HOUR_OF_DAY) + ":" + StartdateAndTime.get(Calendar.MINUTE)
+                                    + " to " + EnddateAndTime.get(Calendar.HOUR_OF_DAY) + ":" + EnddateAndTime.get(Calendar.MINUTE),
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                    dismissDialog(1);
+                    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                    if (TemperatureManager.days.get(day).isFull()) {
+                        fab.setEnabled(false);
+                    }
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "New period should not intersect with one of the current periods",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
         return adb.create();
@@ -154,8 +175,9 @@ public class DaySchedule extends ActionBarActivity {
     }
 
     public void chooseEnd(View v) {
-        openDialog(EnddateAndTime);
         type = false;
+        openDialog(EnddateAndTime);
+
     }
 
     void openDialog(Calendar dateAndTime) {

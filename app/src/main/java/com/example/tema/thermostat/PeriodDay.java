@@ -37,18 +37,28 @@ public class PeriodDay {
             nightperiods.add(new TimePeriod(daysperiods.get(0).endHour, daysperiods.get(0).endMinute, daysperiods.get(0).startHour, daysperiods.get(0).startMinute));
             return;
         }
-        for (int i=0; i<daysperiods.size()-1; i++){
+        for (int i=0; i<daysperiods.size(); i++){
             TimePeriod curPeriod=daysperiods.get(i);
-            TimePeriod nextPeriod=daysperiods.get(i+1);
+            TimePeriod nextPeriod=i==daysperiods.size()-1?daysperiods.get(0):daysperiods.get(i+1);
             nightperiods.add(new TimePeriod(curPeriod.endHour, curPeriod.endMinute, nextPeriod.startHour, nextPeriod.startMinute));
         }
     }
 
-    public void addDayPeriod(int startHour, int startMinute,int endHour, int endMinute){
-        daysperiods.add(new TimePeriod(startHour, startMinute, endHour, endMinute));
+    public boolean addDayPeriod(int startHour, int startMinute,int endHour, int endMinute){
+        TimePeriod newPer=new TimePeriod(startHour, startMinute, endHour, endMinute);
+
+        // checking inspection with all periods
+        for (int i=0; i<daysperiods.size(); i++){
+            if (daysperiods.get(i).inspection(newPer)) {
+                return false;
+            }
+        }
+
+        daysperiods.add(newPer);
         Collections.sort(daysperiods);
         nightperiods.clear();
         setNightPeriods();
+        return true;
     }
 
     public boolean isFull(){
@@ -107,7 +117,7 @@ public class PeriodDay {
                     break;
             case 2: result="Monday";
                 break;
-            case 3: result="Wednesday";
+            case 3: result="Tuesday";
                 break;
             case 4: result="Wednesday";
                 break;

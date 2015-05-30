@@ -36,6 +36,22 @@ public class TimePeriod implements Comparable {
         return 0;
     }
 
+    public boolean inspection(TimePeriod per){
+        // case 1: inspection start hour earliear or equal but and end time with period or equal
+        if (per.startHour<=this.startHour && (per.endHour<=this.endHour)){
+            return true;
+        }
+
+
+        // case 3: per with current period
+        if (per.startHour>=this.startHour && (per.endHour<=this.endHour)){
+            return true;
+        }
+
+        return false;
+    }
+
+
     public void setStartTime(int startHour, int startMinute){
         this.startHour=startHour;
         this.startMinute=startMinute;

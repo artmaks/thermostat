@@ -52,11 +52,10 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/minusButton"
                     android:background="@drawable/ic_minus"
                     android:layout_marginTop="9dp"
-                    android:layout_marginLeft="8dp"
-                    android:onClick="decrementTarget" />
+                    android:layout_marginLeft="8dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,11 +70,10 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/plusButton"
                     android:background="@drawable/ic_plus"
                     android:layout_marginTop="9dp"
-                    android:layout_marginLeft="8dp"
-                    android:onClick="incrementTarget" />
+                    android:layout_marginLeft="8dp" />
 
             </LinearLayout>
 

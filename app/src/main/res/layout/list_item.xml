@@ -1,37 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/imageView2"
-        android:background="@drawable/sun"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:id="@+id/linearLayout">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView2"
+            android:background="@drawable/sun"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Now - 16:00"
+            android:id="@+id/periodText"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"
+            android:textSize="26dp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/deleteButton"
+        android:longClickable="false"
+        android:background="@drawable/delete"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Now - 16:00"
-        android:id="@+id/periodText"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:textStyle="bold"
-        android:textSize="26dp" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
+        android:text="28.00"
         android:id="@+id/temperatureText"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="48dp"
         android:textColor="@color/primaryColor"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_alignTop="@+id/deleteButton"
+        android:layout_toLeftOf="@+id/deleteButton"
+        android:layout_toStartOf="@+id/deleteButton"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="6dp" />
 
-</LinearLayout>
+</RelativeLayout>

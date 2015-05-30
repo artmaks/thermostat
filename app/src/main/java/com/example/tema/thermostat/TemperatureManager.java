@@ -141,13 +141,10 @@ public class TemperatureManager {
     public ArrayList<Item> getNextDays(){
         ArrayList<Item> models = new ArrayList<Item>();
 
-
         String dayT=String.format(Locale.ENGLISH, "%.1f", day_temper);
         String nightT=String.format(Locale.ENGLISH, "%.1f", night_temper);
 
-    /*    models.add(new Item("Today - " + days.get(dayOfWeek-1).getDay()));*/
-
-        int day=dayOfWeek==7?1:dayOfWeek;
+        int day=dayOfWeek;
 
         for (int i=0;i<3;i++ ){
             if (i==0){
@@ -155,16 +152,8 @@ public class TemperatureManager {
             } else {
                 models.addAll(days.get(day-1).getItem(false, dayT, nightT));
             }
+            day=day==7?1:day+1;
         }
-
-
-     /*   for(int i=0; i<2; i++){
-            day=day+1>=8?1:day+1;
-
-            models.add(new Item(days.get(day-1).getDay()));
-            models.add(new Item(days.get(day-1).dayPeriod.toString(), dayT));
-            models.add(new Item(days.get(day-1).nightPeriod.toString(), nightT));
-        }*/
 
         return models;
     }
