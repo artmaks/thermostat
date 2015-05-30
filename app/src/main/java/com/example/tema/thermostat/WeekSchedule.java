@@ -26,6 +26,7 @@ public class WeekSchedule extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent(WeekSchedule.this, DaySchedule.class);
+                DaySchedule.day=(int)id;
                 startActivity(intent);
             }
         });

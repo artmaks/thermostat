@@ -3,7 +3,7 @@ package com.example.tema.thermostat;
 /**
  * Created by Olga on 28.05.2015.
  */
-public class TimePeriod {
+public class TimePeriod implements Comparable {
     int startHour;
     int startMinute;
     int endHour;
@@ -14,6 +14,26 @@ public class TimePeriod {
         this.startMinute=startMinute;
         this.endHour=endHour;
         this.endMinute=endMinute;
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        TimePeriod per=(TimePeriod)obj;
+        if (this.startHour<per.startHour){
+            return -1;
+        }
+        if (this.startHour>per.startHour){
+            return 1;
+        }
+        if (this.startHour==per.startHour){
+            if (this.startMinute>per.startMinute){
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        }
+        return 0;
     }
 
     public void setStartTime(int startHour, int startMinute){

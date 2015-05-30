@@ -13,8 +13,8 @@ import java.util.Locale;
  */
 
 public class TemperatureManager {
-    private static float day_temper;
-    private static float night_temper;
+    public static float day_temper;
+    public static float night_temper;
 
     public static boolean isVacationMode;
     public static float vacation_temp;
@@ -107,6 +107,10 @@ public class TemperatureManager {
 
     }
 
+    public static String getStringDayTemp(){
+        return String.format(Locale.ENGLISH, "%.1f", day_temper);
+    }
+
     public boolean isNewPeriod(){
         float old_target=this.target;
         if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
@@ -137,21 +141,30 @@ public class TemperatureManager {
     public ArrayList<Item> getNextDays(){
         ArrayList<Item> models = new ArrayList<Item>();
 
+
         String dayT=String.format(Locale.ENGLISH, "%.1f", day_temper);
         String nightT=String.format(Locale.ENGLISH, "%.1f", night_temper);
 
-        models.add(new Item("Today - " + days.get(dayOfWeek-1).getDay()));
-        models.add(new Item(days.get(dayOfWeek-1).dayPeriod.toString(), dayT));
-        models.add(new Item(days.get(dayOfWeek-1).nightPeriod.toString(), nightT));
+    /*    models.add(new Item("Today - " + days.get(dayOfWeek-1).getDay()));*/
 
         int day=dayOfWeek==7?1:dayOfWeek;
-        for(int i=0; i<2; i++){
+
+        for (int i=0;i<3;i++ ){
+            if (i==0){
+                models.addAll(days.get(day-1).getItem(true, dayT, nightT));
+            } else {
+                models.addAll(days.get(day-1).getItem(false, dayT, nightT));
+            }
+        }
+
+
+     /*   for(int i=0; i<2; i++){
             day=day+1>=8?1:day+1;
 
             models.add(new Item(days.get(day-1).getDay()));
             models.add(new Item(days.get(day-1).dayPeriod.toString(), dayT));
             models.add(new Item(days.get(day-1).nightPeriod.toString(), nightT));
-        }
+        }*/
 
         return models;
     }

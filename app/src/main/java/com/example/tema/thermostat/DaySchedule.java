@@ -26,11 +26,13 @@ import java.util.Calendar;
 
 public class DaySchedule extends ActionBarActivity {
 
+    public static int day;
     Calendar StartdateAndTime = Calendar.getInstance();
     Calendar EnddateAndTime = Calendar.getInstance();
     TextView startText;
     TextView endText;
     boolean type;
+    MainListAdapter adapter;
 
     TimePickerDialog.OnTimeSetListener t=new TimePickerDialog.OnTimeSetListener() {
         public void onTimeSet(TimePicker view, int hourOfDay,
@@ -55,9 +57,10 @@ public class DaySchedule extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        MainListAdapter adapter = new MainListAdapter(this, generateData());
+        adapter = new MainListAdapter(this, generateData());
         ListView listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(adapter);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToListView(listView);
@@ -66,6 +69,9 @@ public class DaySchedule extends ActionBarActivity {
                 showDialog(1);
             }
         });
+        if (TemperatureManager.days.get(day).isFull()){
+            fab.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -79,6 +85,13 @@ public class DaySchedule extends ActionBarActivity {
         adb.setView(view);
         startText = (TextView)view.findViewById(R.id.startText);
         endText = (TextView)view.findViewById(R.id.endText);
+
+        StartdateAndTime.set(Calendar.HOUR_OF_DAY, 18);
+        StartdateAndTime.set(Calendar.MINUTE, 0);
+        EnddateAndTime.set(Calendar.HOUR_OF_DAY, 21);
+        EnddateAndTime.set(Calendar.MINUTE, 0);
+
+
         Button closeBtn = (Button)view.findViewById(R.id.closeDialog);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +105,8 @@ public class DaySchedule extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 //TODO Запомнить период
+                TemperatureManager.days.get(day).addDayPeriod(StartdateAndTime.get(Calendar.HOUR_OF_DAY), StartdateAndTime.get(Calendar.MINUTE), EnddateAndTime.get(Calendar.HOUR_OF_DAY), EnddateAndTime.get(Calendar.MINUTE));
+                updatePeriods();
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "New period: from" + StartdateAndTime.get(Calendar.HOUR_OF_DAY) + ":" + StartdateAndTime.get(Calendar.MINUTE)
                         + " to " + EnddateAndTime.get(Calendar.HOUR_OF_DAY) + ":" + EnddateAndTime.get(Calendar.MINUTE),
@@ -101,6 +116,12 @@ public class DaySchedule extends ActionBarActivity {
             }
         });
         return adb.create();
+    }
+
+    public void updatePeriods(){
+        adapter.clear();
+        adapter.addAll(generateData());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -123,11 +144,8 @@ public class DaySchedule extends ActionBarActivity {
     }
 
     private ArrayList<Item> generateData(){
-        ArrayList<Item> models = new ArrayList<Item>();
-        models.add(new Item("Now - 16:00", "20.0"));
-        models.add(new Item("16:00 - 22:00", "18.0"));
-        models.add(new Item("22:00 - 23:59", "20.0"));
-        return models;
+        return TemperatureManager.days.get(day).getDayPeriods();
+
     }
 
     public void chooseStart(View v) {
