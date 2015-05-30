@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         if (!TemperatureManager.isVacationMode){
             initializeUsualMode();
             vacation.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             vacation.setVisibility(View.VISIBLE);
             vacation.setText("Vacation mode is on");
             initializeVacationMode();
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
     public void initializeUsualMode(){
         if (firstLaunch){
             firstLaunch=false;
-        } else {
+        }
+        else {
             manager.updateAfterReturn();
         }
 
@@ -94,15 +96,19 @@ public class MainActivity extends AppCompatActivity {
                 updateCurrentTemp = false;
                 currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature));
             }
+
             if (manager.isAnotherDay()) {
                 // update lis of days
                 updateDays();
             }
+
             if (manager.isNewPeriod()) {
+                // update target temp
                 updateTemp();
                 // update current temperature next tick
                 updateCurrentTemp = true;
             }
+
             myHandler.postDelayed(this, 1000);
         }
     };
