@@ -9,7 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        manager=new TemperatureManager();
+        manager = new TemperatureManager();
         firstLaunch=true;
     }
 
@@ -90,11 +93,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             final TextView currentTemp=(TextView)findViewById(R.id.textView);
+
+            DateFormat df = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
             manager.incrementcurrentTime(300000);
+            ((TextView)findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
 
             if (updateCurrentTemp) {
                 updateCurrentTemp = false;
-                currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature));
+                currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature) + "º");
             }
 
             if (manager.isAnotherDay()) {
@@ -159,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
-        target.setText(df.format(targetTemperature));
+        target.setText(df.format(targetTemperature) + "º");
     }
 
     /**

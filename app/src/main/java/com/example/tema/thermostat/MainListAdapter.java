@@ -43,7 +43,7 @@ public class MainListAdapter extends ArrayAdapter<Item> {
 
             // 4. Set the text for textView
             period.setText(modelsArrayList.get(position).Period);
-            temperature.setText(modelsArrayList.get(position).Temperature);
+            temperature.setText(modelsArrayList.get(position).Temperature + "º");
         }
         else{
             rowView = inflater.inflate(R.layout.list_group_item, parent, false);

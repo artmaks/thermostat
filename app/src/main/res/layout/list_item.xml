@@ -30,6 +30,8 @@
         android:text="Small Text"
         android:id="@+id/temperatureText"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="48dp" />
+        android:layout_marginLeft="48dp"
+        android:textColor="@color/primaryColor"
+        android:textSize="20sp" />
 
 </LinearLayout>

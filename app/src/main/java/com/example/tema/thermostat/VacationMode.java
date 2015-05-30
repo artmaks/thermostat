@@ -57,8 +57,10 @@ public class VacationMode extends ActionBarActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     TemperatureManager.isVacationMode=true;
+                    ((TextView)findViewById(R.id.vacationNow)).setText("Now: on");
                 } else {
                     TemperatureManager.isVacationMode=false;
+                    ((TextView)findViewById(R.id.vacationNow)).setText("Now: off");
                 }
             }
         });
@@ -84,9 +86,7 @@ public class VacationMode extends ActionBarActivity {
         target.setText(df.format(target_temp));
     }
 
-    /**
-     * Увеличить target (Нажатие кнопки +)
-     */
+
     public void incrementTarget(View v) {
 
         //check Limits of temp (thirty degrees)
@@ -106,9 +106,6 @@ public class VacationMode extends ActionBarActivity {
 
 
 
-    /**
-     * Уменьшить target (Нажатие кнопки -)
-     */
     public void decrementTarget(View v) {
 
         //check limits of temp (five degrees)
