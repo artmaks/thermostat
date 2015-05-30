@@ -78,9 +78,19 @@
                     android:onClick="incrementTarget" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Now: "
+                android:id="@+id/nowTime"
+                android:textColor="@color/secondColor" />
+
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,6 +101,7 @@
         android:layout_marginLeft="8dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp" />
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

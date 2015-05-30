@@ -1,6 +1,8 @@
 package com.example.tema.thermostat;
 
 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -67,12 +69,12 @@ public class TemperatureManager {
         currenSeconds+=(milliseconds-currenSeconds)*3000;
 
         //initialise others
-        currentTime=new Date(currenSeconds);
+        currentTime = new Date(currenSeconds);
         Calendar c = Calendar.getInstance();
         c.setTime(currentTime);
         currentDay = c.get(Calendar.DAY_OF_WEEK);
-        hour=c.get(Calendar.HOUR_OF_DAY);
-        minutes=c.get(Calendar.MINUTE);
+        hour = c.get(Calendar.HOUR_OF_DAY);
+        minutes = c.get(Calendar.MINUTE);
         if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
             target= day_temper;
             dayPeriod=true;
@@ -102,6 +104,7 @@ public class TemperatureManager {
         currentDay = c.get(Calendar.DAY_OF_WEEK);
         hour=c.get(Calendar.HOUR_OF_DAY);
         minutes=c.get(Calendar.MINUTE);
+
     }
 
     public boolean isNewPeriod(){
