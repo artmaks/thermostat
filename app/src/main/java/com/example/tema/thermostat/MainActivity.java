@@ -202,4 +202,5 @@ public class MainActivity extends AppCompatActivity {
         target.setText(df.format(targetTemperature));
         updateCurrentTemp=true;
     }
+
 }

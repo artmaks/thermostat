@@ -55,7 +55,7 @@ public class DaySchedule extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        MainListAdapter adapter = new MainListAdapter(this, generateData());
+        MainListAdapter adapter = new MainListAdapter(this, generateData(), true);
         ListView listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(adapter);
 
