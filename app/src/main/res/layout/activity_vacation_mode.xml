@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Now: off"
-        android:id="@+id/textView7"
+        android:id="@+id/vacationNow"
         android:textColor="@color/secondColor"
         android:textSize="26dp"
         android:layout_below="@+id/textView6"
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/switch1"
-        android:layout_below="@+id/textView7"
+        android:layout_below="@+id/vacationNow"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp" />
 
