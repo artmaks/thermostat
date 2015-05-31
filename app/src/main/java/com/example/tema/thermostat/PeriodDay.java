@@ -1,5 +1,7 @@
 package com.example.tema.thermostat;
 
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -8,12 +10,12 @@ import java.util.List;
 /**
  * Created by Olga on 28.05.2015.
  */
-public class PeriodDay {
+public class PeriodDay  {
     int Day;
     ArrayList<TimePeriod> daysperiods;
     List<TimePeriod> nightperiods;
     TimePeriod dayPeriod;
-    TimePeriod nightPeriod;
+    private TimePeriod nightPeriod;
 
     public PeriodDay(int Day, TimePeriod day, TimePeriod nightPeriod){
         this.Day=Day;
@@ -82,8 +84,10 @@ public class PeriodDay {
         }
 
         for (int i=0; i<daysperiods.size(); i++) {
+            // TODO изменить конструктор Item с иконкой на день
             models.add(new Item(daysperiods.get(i).toString(), dayT));
             if (i<nightperiods.size())
+            // TODO изменить конструктор Item с иконкой на ночь
                 models.add(new Item(nightperiods.get(i).toString(), nightT));
         }
         return models;
@@ -94,6 +98,7 @@ public class PeriodDay {
         String dayT=TemperatureManager.getStringDayTemp();
 
         for (int i=0; i<daysperiods.size(); i++) {
+            // TODO изменить конструктор Item с иконкой на ночь
             models.add(new Item(daysperiods.get(i).toString(), dayT));
         }
         return models;
@@ -133,6 +138,13 @@ public class PeriodDay {
         return result;
     }
 
+    public TimePeriod[] getArrayPeriods(){
+        TimePeriod[] periods=new TimePeriod[daysperiods.size()];
 
+        for (int i=0; i<periods.length; i++){
+            periods[i]=daysperiods.get(i);
+        }
+        return periods;
+    }
 
 }

@@ -4,6 +4,7 @@ package com.example.tema.thermostat;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -16,6 +17,7 @@ public class TemperatureManager {
     public static float day_temper;
     public static float night_temper;
 
+    public float current_temp;
     public static boolean isVacationMode;
     public static float vacation_temp;
     private float target;
@@ -36,6 +38,7 @@ public class TemperatureManager {
         vacation_temp=18.9f;
         day_temper=29.4f;
         night_temper=5.3f;
+        current_temp=21.4f;
 
         isVacationMode=false;
         Calendar c = Calendar.getInstance();
@@ -52,6 +55,33 @@ public class TemperatureManager {
         days.add(new PeriodDay(5, new TimePeriod(0, 30, 12, 0)));
         days.add(new PeriodDay(6, new TimePeriod(0, 29, 12, 0)));
         days.add(new PeriodDay(7, new TimePeriod(0, 11, 12, 0)));
+
+        if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
+            target= day_temper;
+            dayPeriod=true;
+        }else {
+            target= night_temper;
+            dayPeriod=false;
+        }
+    }
+
+    public TemperatureManager(float dTemp, float nTemp, PeriodDay[] temp_days, boolean mode, float vacTemp, float current_temp){
+        currentTime=new Date();
+        currenSeconds=currentTime.getTime();
+
+        vacation_temp=vacTemp;
+        day_temper=dTemp;
+        night_temper=nTemp;
+        days=new ArrayList<>(Arrays.asList(temp_days));
+        isVacationMode=mode;
+        this.current_temp=current_temp;
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentTime);
+        dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        hour=c.get(Calendar.HOUR_OF_DAY);
+        minutes=c.get(Calendar.MINUTE);
+
 
         if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
             target= day_temper;
@@ -156,5 +186,13 @@ public class TemperatureManager {
         }
 
         return models;
+    }
+
+    public static PeriodDay[] getArrayPeriodDays(){
+        PeriodDay[] day=new PeriodDay[days.size()];
+        for (int i=0; i<day.length; i++){
+            day[i]=days.get(i);
+        }
+        return day;
     }
 }
