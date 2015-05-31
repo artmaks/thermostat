@@ -92,6 +92,20 @@ public class DaySchedule extends ActionBarActivity {
         EnddateAndTime.set(Calendar.HOUR_OF_DAY, 21);
         EnddateAndTime.set(Calendar.MINUTE, 0);
 
+        startText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseStart();
+            }
+        });
+
+
+        endText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseEnd();
+            }
+        });
 
         Button closeBtn = (Button)view.findViewById(R.id.closeDialog);
         closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +124,7 @@ public class DaySchedule extends ActionBarActivity {
                         (EnddateAndTime.get(Calendar.HOUR_OF_DAY)==StartdateAndTime.get(Calendar.HOUR_OF_DAY)&&
                                 (EnddateAndTime.get(Calendar.MINUTE)==StartdateAndTime.get(Calendar.MINUTE)))){
 
-                    chooseEnd(view);
+                    chooseEnd();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "End period is less or equal than start period.\n Set another",
                             Toast.LENGTH_LONG);
@@ -173,12 +187,12 @@ public class DaySchedule extends ActionBarActivity {
 
     }
 
-    public void chooseStart(View v) {
+    public void chooseStart() {
         openDialog(StartdateAndTime);
         type = true;
     }
 
-    public void chooseEnd(View v) {
+    public void chooseEnd() {
         type = false;
         openDialog(EnddateAndTime);
 

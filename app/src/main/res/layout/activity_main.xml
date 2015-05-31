@@ -1,8 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -34,8 +33,8 @@
                 android:layout_marginBottom="16dp">
 
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/currentPeriod" />
 
                 <TextView
@@ -45,16 +44,15 @@
                     android:text="Target:"
                     android:id="@+id/textView2"
                     android:textSize="36dp"
-                    android:textColor="@color/secondColor"
-                    android:layout_marginLeft="8dp" />
+                    android:textColor="@color/secondColor" />
 
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:id="@+id/minusButton"
                     android:background="@drawable/ic_minus"
-                    android:layout_marginTop="9dp"
-                    android:layout_marginLeft="8dp" />
+                    android:layout_marginLeft="8dp"
+                    android:adjustViewBounds="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -67,11 +65,10 @@
                     android:layout_marginLeft="8dp" />
 
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:id="@+id/plusButton"
                     android:background="@drawable/ic_plus"
-                    android:layout_marginTop="9dp"
                     android:layout_marginLeft="8dp" />
 
             </LinearLayout>

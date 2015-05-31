@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 
-//TODO: !Исправления голландца:брать надпись "Now:(off|on) и "Vacation Mode temperature", изменение температуры поставить рядом с выключателем
-//TODO   отцентрировать конечный результат по вертикали
-
 public class VacationMode extends ActionBarActivity {
 
     private static float target_temp;

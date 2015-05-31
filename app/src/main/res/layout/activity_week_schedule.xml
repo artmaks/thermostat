@@ -43,8 +43,8 @@
                         android:layout_marginLeft="8dp" />
 
                     <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:id="@+id/minusDayButton"
                         android:background="@drawable/ic_minus"
                         android:layout_marginTop="8dp"
@@ -61,8 +61,8 @@
                         android:layout_marginTop="2dp" />
 
                     <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:id="@+id/plusDayButton"
                         android:background="@drawable/ic_plus"
                         android:layout_marginTop="8dp" />
@@ -82,8 +82,8 @@
                         android:layout_marginLeft="8dp" />
 
                     <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:id="@+id/minusNightButton"
                         android:background="@drawable/ic_minus"
                         android:layout_marginTop="8dp"
@@ -100,8 +100,8 @@
                         android:layout_marginTop="2dp" />
 
                     <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:id="@+id/plusNightButton"
                         android:background="@drawable/ic_plus"
                         android:layout_marginTop="8dp" />

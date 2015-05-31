@@ -1,6 +1,8 @@
 package com.example.tema.thermostat;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +30,6 @@ import java.util.Locale;
 
 
 
-//TODO: изменить цвет plusButton, minusButton, когда они в режиме недоступности setEnabled(false)
 public class MainActivity extends AppCompatActivity {
 
     public static float targetTemperature;
@@ -62,15 +63,22 @@ public class MainActivity extends AppCompatActivity {
         TextView vacation = (TextView) findViewById(R.id.vacation_text);
         Button btnOff = (Button) findViewById(R.id.vacationOff);
 
+        ImageButton plusButton = (ImageButton)findViewById(R.id.plusButton);
+        ImageButton minusButton = (ImageButton)findViewById(R.id.minusButton);
+
         if (!TemperatureManager.isVacationMode) {
             initializeUsualMode();
             vacation.setVisibility(View.GONE);
             btnOff.setVisibility(View.GONE);
+            plusButton.setBackgroundResource(R.drawable.ic_plus);
+            minusButton.setBackgroundResource(R.drawable.ic_minus);
         } else {
             vacation.setVisibility(View.VISIBLE);
             btnOff.setVisibility(View.VISIBLE);
             vacation.setText("Vacation mode is on");
             initializeVacationMode();
+            plusButton.setBackgroundResource(R.drawable.ic_plus_block);
+            minusButton.setBackgroundResource(R.drawable.ic_minus_block);
         }
     }
 

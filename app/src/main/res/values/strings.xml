@@ -9,6 +9,8 @@
 
     <color name="primaryColor">#2196F3</color>
     <color name="secondColor">#FFFFFF</color>
+    <color name="GREY">#ffbababa</color>
+    <color name="BLACK">#ff000000</color>
     <string name="title_activity_week_schedule">Week Schedule</string>
 
     <string-array name="dayList">

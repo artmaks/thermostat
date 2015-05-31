@@ -84,10 +84,8 @@ public class PeriodDay  {
         }
 
         for (int i=0; i<daysperiods.size(); i++) {
-            // TODO �������� ����������� Item � ������� �� ����
             models.add(new Item(daysperiods.get(i).toString(), dayT, true));
             if (i<nightperiods.size())
-            // TODO �������� ����������� Item � ������� �� ����
                 models.add(new Item(nightperiods.get(i).toString(), nightT, false));
         }
         return models;
@@ -98,7 +96,6 @@ public class PeriodDay  {
         String dayT=TemperatureManager.getStringDayTemp();
 
         for (int i=0; i<daysperiods.size(); i++) {
-            // TODO �������� ����������� Item � ������� �� ����
             models.add(new Item(daysperiods.get(i).toString(), dayT, true));
         }
         return models;

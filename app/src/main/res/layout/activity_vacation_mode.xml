@@ -59,11 +59,10 @@
         android:layout_marginTop="8dp">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/minusButton"
-            android:background="@drawable/ic_minus"
-            android:layout_marginTop="8dp" />
+            android:background="@drawable/ic_minus" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,10 +75,9 @@
             android:layout_marginLeft="8dp" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/plusButton"
-            android:background="@drawable/ic_plus"
-            android:layout_marginTop="8dp" />
+            android:background="@drawable/ic_plus" />
     </LinearLayout>
 </RelativeLayout>
