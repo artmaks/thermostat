@@ -96,7 +96,7 @@ public class TemperatureManager {
         // count time from returning
         currentTime=new Date();
         long milliseconds=currentTime.getTime();
-        currenSeconds+=(milliseconds-currenSeconds)*3000;
+        currenSeconds+=(milliseconds-currenSeconds)*300;
 
         //initialise others
         currentTime = new Date(currenSeconds);
