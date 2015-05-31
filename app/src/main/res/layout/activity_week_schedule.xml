@@ -45,7 +45,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageButton5"
+                        android:id="@+id/minusDayButton"
                         android:background="@drawable/ic_minus"
                         android:layout_marginTop="8dp"
                         android:layout_marginLeft="8dp" />
@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="18.6"
-                        android:id="@+id/textView4"
+                        android:id="@+id/dayTemp"
                         android:textSize="36dp"
                         android:textColor="@color/secondColor"
                         android:layout_marginTop="2dp" />
@@ -63,7 +63,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageButton6"
+                        android:id="@+id/plusDayButton"
                         android:background="@drawable/ic_plus"
                         android:layout_marginTop="8dp" />
                 </LinearLayout>
@@ -84,7 +84,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageButton3"
+                        android:id="@+id/minusNightButton"
                         android:background="@drawable/ic_minus"
                         android:layout_marginTop="8dp"
                         android:layout_marginLeft="8dp" />
@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="18.6"
-                        android:id="@+id/textView5"
+                        android:id="@+id/nightTemp"
                         android:textSize="36dp"
                         android:textColor="@color/secondColor"
                         android:layout_marginTop="2dp" />
@@ -102,7 +102,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageButton4"
+                        android:id="@+id/plusNightButton"
                         android:background="@drawable/ic_plus"
                         android:layout_marginTop="8dp" />
                 </LinearLayout>

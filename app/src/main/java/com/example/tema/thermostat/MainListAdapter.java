@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.util.ArrayList;
 
 /**
@@ -16,16 +18,18 @@ import java.util.ArrayList;
  */
 public class MainListAdapter extends ArrayAdapter<Item> {
     private final Context context;
-    private final ArrayList<Item> modelsArrayList;
+    private  ArrayList<Item> modelsArrayList;
     private final boolean deleteAccess;
+    private FloatingActionButton fab;
 
-    public MainListAdapter(Context context, ArrayList<Item> modelsArrayList, boolean deleteAccess) {
+    public MainListAdapter(Context context, ArrayList<Item> modelsArrayList, boolean deleteAccess, FloatingActionButton fab) {
 
         super(context, R.layout.list_item, modelsArrayList);
 
         this.context = context;
         this.modelsArrayList = modelsArrayList;
         this.deleteAccess = deleteAccess;
+        this.fab=fab;
     }
 
     public MainListAdapter(Context context, ArrayList<Item> modelsArrayList) {
@@ -39,7 +43,6 @@ public class MainListAdapter extends ArrayAdapter<Item> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
         // 1. Create inflater
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,6 +53,7 @@ public class MainListAdapter extends ArrayAdapter<Item> {
         View rowView = null;
         if(!modelsArrayList.get(position).isGroupHeader){
             rowView = inflater.inflate(R.layout.list_item, parent, false);
+
 
             // 3. Get icon,title & counter views from the rowView
             TextView period = (TextView) rowView.findViewById(R.id.periodText);
@@ -65,16 +69,29 @@ public class MainListAdapter extends ArrayAdapter<Item> {
             titleView.setText(modelsArrayList.get(position).Title);
 
         }
-        if(!deleteAccess) {
+        if(!deleteAccess||modelsArrayList.size()==1) {
             ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.deleteButton);
             if(deleteBtn != null)
                 deleteBtn.setVisibility(View.INVISIBLE);
+
         } else {
+
+
             ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.deleteButton);
             if(deleteBtn != null)
                 deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        TemperatureManager.days.get(DaySchedule.day).daysperiods.remove(position);
+                        modelsArrayList.remove(position);
+                        notifyDataSetChanged();
+
+                        if (fab!=null){
+                            if (!TemperatureManager.days.get(DaySchedule.day).isFull()) {
+                                fab.setEnabled(true);
+                            }
+                        }
+
                         Toast toast = Toast.makeText(getContext(),
                                 "Delete element " + position,
                                 Toast.LENGTH_SHORT);

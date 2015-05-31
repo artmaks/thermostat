@@ -11,7 +11,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -19,12 +26,14 @@ import java.util.Locale;
 
 
 
+//TODO: изменить цвет plusButton, minusButton, когда они в режиме недоступности setEnabled(false)
 public class MainActivity extends AppCompatActivity {
 
     public static float targetTemperature;
+    public static float currentTemperature;
+
     private TemperatureManager manager;
     private MainListAdapter adapter;
-    private boolean updateCurrentTemp;
     private boolean firstLaunch;
     final Handler myHandler = new Handler();
 
@@ -33,17 +42,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        manager = new TemperatureManager();
-        firstLaunch=true;
+        if (!readJson()){
+            manager=new TemperatureManager();
+        }
+        currentTemperature = manager.current_temp;
+        TextView currentTemp = (TextView) findViewById(R.id.textView);
+        currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", currentTemperature) + "º");
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        ((TextView) findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
+        firstLaunch = true;
     }
 
 
     @Override
-    protected void onResume (){
+    protected void onResume() {
         super.onResume();
-        TextView vacation=(TextView)findViewById(R.id.vacation_text);
+        TextView vacation = (TextView) findViewById(R.id.vacation_text);
 
-        if (!TemperatureManager.isVacationMode){
+        if (!TemperatureManager.isVacationMode) {
             initializeUsualMode();
             vacation.setVisibility(View.GONE);
         } else {
@@ -53,74 +69,170 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private String getJson(){
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(TemperatureManager.class, new TemperatureManagerSerialiser());
+        gsonBuilder.setPrettyPrinting();
+        final Gson gson = gsonBuilder.create();
+
+        return gson.toJson(manager);
+    }
+
+    public void saveJson(){
+        File myFile = new File(getFilesDir(),"thermostat_property.json");
+        FileOutputStream fOut;
+        try {
+            if (!myFile.exists()) {
+                myFile.createNewFile();
+            }
+            fOut = new FileOutputStream(myFile);
+            OutputStreamWriter myOutWriter =new OutputStreamWriter(fOut);
+            myOutWriter.write(getJson());
+            myOutWriter.close();
+            fOut.close();
+        }
+        catch (Exception e){
+
+        }
+
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState){
+        saveJson();
+    }
+
+    public boolean  readJson(){
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(TemperatureManager.class, new TemperatureManagerDesealiser());
+        final Gson gson = gsonBuilder.create();
+        File myFile = new File(getFilesDir(),"thermostat_property.json");
+        try {
+        if (myFile.exists()) {
+            FileInputStream fIn = new FileInputStream(myFile);
+            Reader myReader = new InputStreamReader(fIn);
+            manager=gson.fromJson(myReader, TemperatureManager.class);
+            myReader.close();
+            return true;
+        }} catch (Exception e){
+
+        }
+        return false;
+    }
     @Override
     protected void onPause() {
         super.onPause();
         myHandler.removeCallbacks(updateDays);
     }
 
-    public void initializeVacationMode(){
-        ListView listView = (ListView)findViewById(R.id.mainListView);
+    public void initializeVacationMode() {
+        ListView listView = (ListView) findViewById(R.id.mainListView);
         listView.setVisibility(View.GONE);
 
-        TextView currentTemp=(TextView)findViewById(R.id.textView);
-        targetTemperature=TemperatureManager.vacation_temp;
+        ImageButton plus=(ImageButton)findViewById(R.id.plusButton);
+        ImageButton minus=(ImageButton)findViewById(R.id.minusButton);
+        plus.setEnabled(false);
+        minus.setEnabled(false);
+
+        ((TextView) findViewById(R.id.nowTime)).setVisibility(View.GONE);
+
+        targetTemperature = TemperatureManager.vacation_temp;
         initializeView();
-        currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature));
+        myHandler.postDelayed(updateCurTempInVacationMode, 2000);
+
     }
 
-    public void initializeUsualMode(){
-        if (firstLaunch){
-            firstLaunch=false;
+    private Runnable updateCurTempInVacationMode=new Runnable() {
+        @Override
+        public void run() {
+            setUpdateCurrentTemp();
+            myHandler.postDelayed(this, 2000);
+        }
+    };
+
+    public void initializeUsualMode() {
+        if (firstLaunch) {
+            firstLaunch = false;
         } else {
             manager.updateAfterReturn();
         }
+        ImageButton plus=(ImageButton)findViewById(R.id.plusButton);
+        ImageButton minus=(ImageButton)findViewById(R.id.minusButton);
+        plus.setEnabled(true);
+        minus.setEnabled(true);
 
         adapter = new MainListAdapter(this, manager.getNextDays());
-        ListView listView = (ListView)findViewById(R.id.mainListView);
+        ListView listView = (ListView) findViewById(R.id.mainListView);
         listView.setAdapter(adapter);
         listView.setVisibility(View.VISIBLE);
 
-        updateCurrentTemp=true;
-
-        targetTemperature=manager.getTargetTemprature();
+        targetTemperature = manager.getTargetTemprature();
         initializeView();
 
         myHandler.postDelayed(updateDays, 1000);
     }
 
-    private  Runnable updateDays=new Runnable() {
+    public static double logb(double a, double b) {
+        return Math.log(a) / Math.log(b);
+    }
+
+    public static double log2(double a) {
+        return logb(a, 2);
+    }
+
+    private Runnable updateDays = new Runnable() {
         @Override
         public void run() {
-            final TextView currentTemp=(TextView)findViewById(R.id.textView);
-
-            DateFormat df = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+            DateFormat df = new SimpleDateFormat("HH:mm dd");
             manager.incrementcurrentTime(300000);
-            ((TextView)findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
+            ((TextView) findViewById(R.id.nowTime)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
 
-            if (updateCurrentTemp) {
-                updateCurrentTemp = false;
-                currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", targetTemperature) + "º");
-            }
+            // update current temp
+            setUpdateCurrentTemp();
+
             if (manager.isAnotherDay()) {
                 // update lis of days
                 updateDays();
             }
+
             if (manager.isNewPeriod()) {
+                // update target temp
                 updateTemp();
-                // update current temperature next tick
-                updateCurrentTemp = true;
             }
+
             myHandler.postDelayed(this, 1000);
         }
     };
 
-    public void updateTemp(){
+    public void setUpdateCurrentTemp(){
+        TextView currentTemp = (TextView) findViewById(R.id.textView);
+
+        float epsilon = 0.01f;
+        float differ = Math.abs(targetTemperature - currentTemperature);
+
+        if (differ > epsilon) {
+
+            if (differ <= 2.01f) {
+                currentTemperature = targetTemperature;
+            } else {
+                float change = (float) differ / (float) log2(differ);
+                currentTemperature = currentTemperature > targetTemperature ? currentTemperature - change : currentTemperature + change;
+            }
+
+            currentTemp.setText("Current: " + String.format(Locale.ENGLISH, "%.1f", currentTemperature) + "º");
+        } else  if (TemperatureManager.isVacationMode && myHandler!=null){
+            myHandler.removeCallbacks(updateCurTempInVacationMode);
+        }
+
+    }
+    public void updateTemp() {
         targetTemperature = manager.getTargetTemprature();
         initializeView();
     }
 
-    public void updateDays(){
+    public void updateDays() {
         adapter.clear();
         adapter.addAll(manager.getNextDays());
         adapter.notifyDataSetChanged();
@@ -156,15 +268,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private static float target_t=0.0f;
+
     public void initializeView() {
-        TextView target = (TextView)findViewById(R.id.targetText);
+        TextView target = (TextView) findViewById(R.id.targetText);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
         target.setText(df.format(targetTemperature) + "º");
 
-        ImageButton plusButton = (ImageButton)findViewById(R.id.plusButton);
-        ImageButton minusButton = (ImageButton)findViewById(R.id.minusButton);
+        ImageButton plusButton = (ImageButton) findViewById(R.id.plusButton);
+        ImageButton minusButton = (ImageButton) findViewById(R.id.minusButton);
 
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,9 +299,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         if (mHandler != null) return true;
+                        target_t=targetTemperature;
                         mHandler = new Handler();
                         mHandler.postDelayed(mAction, 100);
                         break;
@@ -195,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
                         if (mHandler == null) return true;
                         mHandler.removeCallbacks(mAction);
                         mHandler = null;
+                        targetTemperature=target_t;
                         break;
                 }
                 return false;
@@ -203,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
             Runnable mAction = new Runnable() {
                 @Override
                 public void run() {
-                    decrementTarget();
+                    decrementLongTarget();
                     mHandler.postDelayed(this, 100);
                 }
             };
@@ -214,8 +331,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        target_t=targetTemperature;
                         if (mHandler != null) return true;
                         mHandler = new Handler();
                         mHandler.postDelayed(mAction, 100);
@@ -224,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
                         if (mHandler == null) return true;
                         mHandler.removeCallbacks(mAction);
                         mHandler = null;
+                        targetTemperature=target_t;
                         break;
                 }
                 return false;
@@ -232,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
             Runnable mAction = new Runnable() {
                 @Override
                 public void run() {
-                    incrementTarget();
+                    incrementLongTarget();
                     mHandler.postDelayed(this, 100);
                 }
             };
@@ -245,20 +365,35 @@ public class MainActivity extends AppCompatActivity {
     public void incrementTarget() {
 
         //check Limits of temp (thirty degrees)
-        float epsilon=0.01f;
-        if (Math.abs(targetTemperature-30)<epsilon){
+        float epsilon = 0.01f;
+        if (Math.abs(targetTemperature - 30) < epsilon) {
             return;
         }
 
-        TextView target = (TextView)findViewById(R.id.targetText);
+        TextView target = (TextView) findViewById(R.id.targetText);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
         targetTemperature += 0.1;
         target.setText(df.format(targetTemperature));
-        updateCurrentTemp=true;
+
     }
 
+    public void incrementLongTarget() {
+
+        //check Limits of temp (thirty degrees)
+        float epsilon = 0.01f;
+        if (Math.abs(target_t - 30) < epsilon) {
+            return;
+        }
+
+        TextView target = (TextView) findViewById(R.id.targetText);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        df.setMinimumFractionDigits(1);
+        target_t += 0.1;
+        target.setText(df.format(target_t));
+    }
 
     /**
      * Уменьшить target (Нажатие кнопки -)
@@ -266,18 +401,31 @@ public class MainActivity extends AppCompatActivity {
     public void decrementTarget() {
 
         //check limits of temp (five degrees)
-        float epsilon=0.1f;
-        if (Math.abs(targetTemperature-5)<epsilon){
+        float epsilon = 0.1f;
+        if (Math.abs(targetTemperature - 5) < epsilon) {
             return;
         }
 
-        TextView target = (TextView)findViewById(R.id.targetText);
+        TextView target = (TextView) findViewById(R.id.targetText);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         df.setMinimumFractionDigits(1);
         targetTemperature -= 0.1;
         target.setText(df.format(targetTemperature));
-        updateCurrentTemp=true;
     }
 
+    public void decrementLongTarget(){
+        //check limits of temp (five degrees)
+        float epsilon = 0.1f;
+        if (Math.abs(target_t - 5) < epsilon) {
+            return;
+        }
+
+        TextView target = (TextView) findViewById(R.id.targetText);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        df.setMinimumFractionDigits(1);
+        target_t -= 0.1;
+        target.setText(df.format(target_t));
+    }
 }
