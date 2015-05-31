@@ -105,16 +105,20 @@ public class DaySchedule extends ActionBarActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (EnddateAndTime.get(Calendar.HOUR_OF_DAY)<StartdateAndTime.get(Calendar.HOUR_OF_DAY)){
+                // check if end period more than start one
+                if (EnddateAndTime.get(Calendar.HOUR_OF_DAY)<StartdateAndTime.get(Calendar.HOUR_OF_DAY)||
+                        (EnddateAndTime.get(Calendar.HOUR_OF_DAY)==StartdateAndTime.get(Calendar.HOUR_OF_DAY)&&
+                                (EnddateAndTime.get(Calendar.MINUTE)==StartdateAndTime.get(Calendar.MINUTE)))){
+
                     chooseEnd(view);
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "End period is less than start period.\n Set another",
+                            "End period is less or equal than start period.\n Set another",
                             Toast.LENGTH_LONG);
                     toast.show();
                     return;
                 }
 
-                //TODO Запомнить период
+                // check whether new period intersects with one of current
                 if (TemperatureManager.days.get(day).addDayPeriod(StartdateAndTime.get(Calendar.HOUR_OF_DAY), StartdateAndTime.get(Calendar.MINUTE), EnddateAndTime.get(Calendar.HOUR_OF_DAY), EnddateAndTime.get(Calendar.MINUTE))) {
                     updatePeriods();
                     Toast toast = Toast.makeText(getApplicationContext(),
