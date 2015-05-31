@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.gson.Gson;
@@ -192,6 +193,13 @@ public class MainActivity extends AppCompatActivity {
             manager.incrementcurrentTime(300000);
             ((TextView) findViewById(R.id.nowTime)).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
+
+            ImageView currPeriod = (ImageView)findViewById(R.id.currentPeriod);
+            if(manager.isDayPeriod()) {
+                currPeriod.setImageResource(R.drawable.puresun);
+            } else {
+                currPeriod.setImageResource(R.drawable.purenight);
+            }
 
             // update current temp
             setUpdateCurrentTemp();

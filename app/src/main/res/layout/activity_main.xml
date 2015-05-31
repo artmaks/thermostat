@@ -36,8 +36,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:id="@+id/imageView"
-                    android:background="@drawable/puresun" />
+                    android:id="@+id/currentPeriod" />
 
                 <TextView
                     android:layout_width="wrap_content"
