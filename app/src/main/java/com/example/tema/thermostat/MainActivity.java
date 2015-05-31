@@ -134,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
         ImageButton minus=(ImageButton)findViewById(R.id.minusButton);
         plus.setEnabled(false);
         minus.setEnabled(false);
+
+        ((TextView) findViewById(R.id.nowTime)).setVisibility(View.GONE);
+
         targetTemperature = TemperatureManager.vacation_temp;
         initializeView();
         myHandler.postDelayed(updateCurTempInVacationMode, 2000);
@@ -183,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             DateFormat df = new SimpleDateFormat("HH:mm dd");
             manager.incrementcurrentTime(300000);
+            ((TextView) findViewById(R.id.nowTime)).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
 
             // update current temp
