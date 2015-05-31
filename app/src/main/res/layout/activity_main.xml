@@ -37,7 +37,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:id="@+id/imageView"
-                    android:background="@drawable/sun" />
+                    android:background="@drawable/puresun" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -99,6 +99,14 @@
         android:layout_marginLeft="8dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="off"
+        android:id="@+id/vacationOff"
+        android:layout_gravity="center"
+        android:onClick="vacationOff" />
 
     <ListView
         android:layout_width="fill_parent"

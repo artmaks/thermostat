@@ -84,11 +84,11 @@ public class PeriodDay  {
         }
 
         for (int i=0; i<daysperiods.size(); i++) {
-            // TODO изменить конструктор Item с иконкой на день
-            models.add(new Item(daysperiods.get(i).toString(), dayT));
+            // TODO пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Item пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+            models.add(new Item(daysperiods.get(i).toString(), dayT, true));
             if (i<nightperiods.size())
-            // TODO изменить конструктор Item с иконкой на ночь
-                models.add(new Item(nightperiods.get(i).toString(), nightT));
+            // TODO пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Item пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+                models.add(new Item(nightperiods.get(i).toString(), nightT, false));
         }
         return models;
     }
@@ -98,8 +98,8 @@ public class PeriodDay  {
         String dayT=TemperatureManager.getStringDayTemp();
 
         for (int i=0; i<daysperiods.size(); i++) {
-            // TODO изменить конструктор Item с иконкой на ночь
-            models.add(new Item(daysperiods.get(i).toString(), dayT));
+            // TODO пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Item пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+            models.add(new Item(daysperiods.get(i).toString(), dayT, true));
         }
         return models;
     }

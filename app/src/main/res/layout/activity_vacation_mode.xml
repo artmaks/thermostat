@@ -27,7 +27,8 @@
         android:textColor="@color/secondColor"
         android:textSize="26dp"
         android:layout_below="@+id/textView6"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 
     <Switch
         android:layout_width="wrap_content"

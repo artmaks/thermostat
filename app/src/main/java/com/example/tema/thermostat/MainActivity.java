@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,12 +59,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         TextView vacation = (TextView) findViewById(R.id.vacation_text);
+        Button btnOff = (Button) findViewById(R.id.vacationOff);
 
         if (!TemperatureManager.isVacationMode) {
             initializeUsualMode();
             vacation.setVisibility(View.GONE);
+            btnOff.setVisibility(View.GONE);
         } else {
             vacation.setVisibility(View.VISIBLE);
+            btnOff.setVisibility(View.VISIBLE);
             vacation.setText("Vacation mode is on");
             initializeVacationMode();
         }
@@ -427,5 +431,10 @@ public class MainActivity extends AppCompatActivity {
         df.setMinimumFractionDigits(1);
         target_t -= 0.1;
         target.setText(df.format(target_t));
+    }
+
+    public void vacationOff(View v) {
+        TemperatureManager.isVacationMode = false;
+        onResume();
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +55,6 @@ public class MainListAdapter extends ArrayAdapter<Item> {
         if(!modelsArrayList.get(position).isGroupHeader){
             rowView = inflater.inflate(R.layout.list_item, parent, false);
 
-
             // 3. Get icon,title & counter views from the rowView
             TextView period = (TextView) rowView.findViewById(R.id.periodText);
             TextView temperature = (TextView) rowView.findViewById(R.id.temperatureText);
@@ -62,6 +62,13 @@ public class MainListAdapter extends ArrayAdapter<Item> {
             // 4. Set the text for textView
             period.setText(modelsArrayList.get(position).Period);
             temperature.setText(modelsArrayList.get(position).Temperature + "º");
+
+            ImageView periodImage = (ImageView)rowView.findViewById(R.id.periodImage);
+            if(modelsArrayList.get(position).isDay) {
+                periodImage.setBackgroundResource(R.drawable.sun);
+            } else {
+                periodImage.setBackgroundResource(R.drawable.night);
+            }
         }
         else{
             rowView = inflater.inflate(R.layout.list_group_item, parent, false);
@@ -69,6 +76,7 @@ public class MainListAdapter extends ArrayAdapter<Item> {
             titleView.setText(modelsArrayList.get(position).Title);
 
         }
+
         if(!deleteAccess||modelsArrayList.size()==1) {
             ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.deleteButton);
             if(deleteBtn != null)
