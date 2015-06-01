@@ -26,6 +26,7 @@ import java.io.Reader;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public static float currentTemperature;
 
     private TemperatureManager manager;
+    private long differSeconds;
     private MainListAdapter adapter;
     private boolean firstLaunch;
     final Handler myHandler = new Handler();
@@ -137,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         myHandler.removeCallbacks(updateDays);
+        Date t=new Date();
+        differSeconds=t.getTime();
     }
 
     public void initializeVacationMode() {
@@ -168,17 +172,27 @@ public class MainActivity extends AppCompatActivity {
         if (firstLaunch) {
             firstLaunch = false;
         } else {
-            manager.updateAfterReturn();
+            Date t=new Date();
+            differSeconds=t.getTime()-differSeconds;
+            manager.updateAfterReturn(differSeconds);
+
         }
+
+        DateFormat df = new SimpleDateFormat("HH:mm dd");
+        ((TextView) findViewById(R.id.nowTime)).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
         ImageButton plus=(ImageButton)findViewById(R.id.plusButton);
         ImageButton minus=(ImageButton)findViewById(R.id.minusButton);
         plus.setEnabled(true);
         minus.setEnabled(true);
 
+
+
         adapter = new MainListAdapter(this, manager.getNextDays());
         ListView listView = (ListView) findViewById(R.id.mainListView);
         listView.setAdapter(adapter);
         listView.setVisibility(View.VISIBLE);
+
 
         targetTemperature = manager.getTargetTemprature();
         initializeView();
@@ -197,8 +211,9 @@ public class MainActivity extends AppCompatActivity {
     private Runnable updateDays = new Runnable() {
         @Override
         public void run() {
-            DateFormat df = new SimpleDateFormat("HH:mm dd");
             manager.incrementcurrentTime(300000);
+
+            DateFormat df = new SimpleDateFormat("HH:mm dd");
             ((TextView) findViewById(R.id.nowTime)).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.nowTime)).setText("Now: " + df.format(manager.currentTime));
 

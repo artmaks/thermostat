@@ -103,6 +103,7 @@ public class PeriodDay  {
 
     public boolean comparePeriod(int hour, int minute){
         for (int i=0; i<daysperiods.size(); i++){
+
             // time can be only in one period
             if (daysperiods.get(i).compareWithTime(hour,minute)){
                 return true;
