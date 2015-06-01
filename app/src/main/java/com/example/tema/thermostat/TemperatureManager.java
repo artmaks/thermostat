@@ -92,19 +92,19 @@ public class TemperatureManager {
         }
     }
 
-    public void updateAfterReturn(){
+    public void updateAfterReturn(long milliseconds){
         // count time from returning
-        currentTime=new Date();
-        long milliseconds=currentTime.getTime();
-        currenSeconds+=(milliseconds-currenSeconds)*300;
+        currenSeconds+=(milliseconds)*300;
 
         //initialise others
         currentTime = new Date(currenSeconds);
         Calendar c = Calendar.getInstance();
         c.setTime(currentTime);
         currentDay = c.get(Calendar.DAY_OF_WEEK);
+
         hour = c.get(Calendar.HOUR_OF_DAY);
         minutes = c.get(Calendar.MINUTE);
+
         if (days.get(dayOfWeek-1).comparePeriod(hour, minutes)){
             target= day_temper;
             dayPeriod=true;
